@@ -14,7 +14,8 @@
   "ui": "ui.html",
   "networkAccess": {
     "allowedDomains": [
-      "https://fastidious-starburst-521994.netlify.app"
+      "https://raw.githubusercontent.com/kykyblaze/atlaskits/",
+      "https://raw.githubusercontent.com"
     ]
   }
 }
