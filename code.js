@@ -9,9 +9,9 @@ const PLUGIN_HEIGHT = 560;
 
 // Shape dimensions (px) matching the UI filter
 const SHAPE_SIZES = {
-  rect: { w: 180, h: 120 },
-  sq:   { w: 120, h: 120 },
-  circ: { w: 120, h: 120 },
+  rect: { w: 75, h: 50 },
+  sq:   { w: 50, h: 50 },
+  circ: { w: 50, h: 50 },
 };
 
 const DEFAULT_SIZE  = { w: 160, h: 160 };
@@ -25,7 +25,7 @@ const ITEM_SPACING  = 24; // gap between placed nodes
 figma.showUI(__html__, {
   width:  PLUGIN_WIDTH,
   height: PLUGIN_HEIGHT,
-  title:  "Country Assets",
+  title:  "AtlasKits",
   themeColors: true,
 });
 
