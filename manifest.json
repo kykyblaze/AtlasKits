@@ -14,8 +14,7 @@
   "ui": "ui.html",
   "networkAccess": {
     "allowedDomains": [
-      "https://raw.githubusercontent.com/kykyblaze/atlaskits/",
-      "https://raw.githubusercontent.com"
+      "https://monumental-zuccutto-ce956a.netlify.app"
     ]
   }
 }
