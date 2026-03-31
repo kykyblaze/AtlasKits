@@ -203,6 +203,27 @@
   .item-img-wrap.coat  img { width: 28px; height: 32px; object-fit: contain; }
   .item-img-wrap.map   img { width: 34px; height: 26px; object-fit: contain; }
 
+  .item-img-wrap img {
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+
+  /* Skeleton Loading */
+  @keyframes shimmer {
+    to { background-position-x: -200%; }
+  }
+  .skeleton {
+    background: linear-gradient(110deg, var(--surface2) 30%, var(--border) 50%, var(--surface2) 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite linear;
+    position: absolute;
+  }
+  .skeleton.rect  { width: 36px; height: 24px; border-radius: 2px; }
+  .skeleton.sq    { width: 24px; height: 24px; border-radius: 2px; }
+  .skeleton.circ  { width: 24px; height: 24px; border-radius: 50%; }
+  .skeleton.coat  { width: 28px; height: 32px; border-radius: 3px; }
+  .skeleton.map   { width: 34px; height: 26px; border-radius: 3px; }
+
   /* Fallback placeholder */
   .img-placeholder {
     background: var(--surface2);
@@ -704,8 +725,10 @@ function renderImg(item) {
   const cls = imgClass();
   const url = getItemUrl(item);
   return `<div class="item-img-wrap ${cls}">
+    <div class="skeleton ${cls}"></div>
     <img src="${url}" alt="${item.name}" loading="lazy" 
-         onerror="this.parentNode.innerHTML='<div class=\\'img-placeholder ${cls}\\'>${item.iso || '?'}</div>'"/>
+         onload="this.style.opacity='1'; if(this.previousElementSibling) this.previousElementSibling.style.display='none';"
+         onerror="if(this.previousElementSibling) this.previousElementSibling.style.display='none'; this.parentNode.innerHTML='<div class=\\'img-placeholder ${cls}\\'>${item.iso || '?'}</div>'"/>
   </div>`;
 }
 
