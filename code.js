@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────
 // AtlasKits – Figma Plugin (code.js)
 // Supports: Figma Design, FigJam, Figma Slides
-// SVGs are fetched from a remote CDN/hosted URL.
+// SVGs are bundled locally — no network requests needed.
 // ─────────────────────────────────────────────────────────────────
 
 const PLUGIN_WIDTH  = 320;
@@ -9,23 +9,22 @@ const PLUGIN_HEIGHT = 560;
 
 // Shape dimensions (px) matching the UI filter
 const SHAPE_SIZES = {
-  rect: { w: 75, h: 50 },
-  sq:   { w: 50, h: 50 },
-  circ: { w: 50, h: 50 },
+  rect: { w: 75,  h: 50  },
+  sq:   { w: 50,  h: 50  },
+  circ: { w: 50,  h: 50  },
 };
 
-const DEFAULT_SIZE  = { w: 160, h: 160 };
-const COAT_SIZE     = { w: 140, h: 160 };
-const MAP_SIZE      = { w: 240, h: 180 };
-const ITEM_SPACING  = 24; // gap between placed nodes
+const COAT_SIZE    = { w: 140, h: 160 };
+const MAP_SIZE     = { w: 240, h: 180 };
+const ITEM_SPACING = 24; // gap between placed nodes
 
 // ─────────────────────────────────────────
 // Boot – show UI
 // ─────────────────────────────────────────
 figma.showUI(__html__, {
-  width:  PLUGIN_WIDTH,
-  height: PLUGIN_HEIGHT,
-  title:  "AtlasKits",
+  width:       PLUGIN_WIDTH,
+  height:      PLUGIN_HEIGHT,
+  title:       "AtlasKits",
   themeColors: true,
 });
 
@@ -39,13 +38,13 @@ figma.ui.onmessage = async (msg) => {
 };
 
 // ─────────────────────────────────────────
-// Core: fetch SVG from CDN → place on canvas
+// Core: place each SVG on the canvas
 // ─────────────────────────────────────────
 async function handleAddAssets(items) {
   if (!items || items.length === 0) return;
 
-  const nodes   = [];
-  const failed  = [];
+  const nodes  = [];
+  const failed = [];
 
   for (const item of items) {
     try {
@@ -62,49 +61,30 @@ async function handleAddAssets(items) {
   }
 
   if (nodes.length === 0) {
-    figma.ui.postMessage({
-      type: 'add-error',
-      message: 'Could not load any SVG files. Check your CDN URL and network access settings in manifest.json.'
-    });
+    figma.ui.postMessage({ type: 'add-error', message: 'Could not place any SVG nodes.' });
     return;
   }
 
   await arrangeNodes(nodes);
-
   figma.currentPage.selection = nodes;
   figma.viewport.scrollAndZoomIntoView(nodes);
-
   figma.ui.postMessage({ type: 'add-success', count: nodes.length });
 
   if (failed.length > 0) {
-    console.warn('Some items failed to load:', failed);
+    console.warn('Some items failed to place:', failed);
   }
 }
 
 // ─────────────────────────────────────────
-// Fetch SVG text from CDN and create a node
+// Create a Figma node from the bundled SVG text
 // ─────────────────────────────────────────
 async function placeAsset(item) {
-  // Fetch SVG from hosted CDN URL
-  let svgText = null;
+  const svgText = item.svgText;
 
-  try {
-    const response = await fetch(item.url);
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} for ${item.url}`);
-    }
-    const text = await response.text();
-    // Basic SVG validation
-    if (!text.includes('<svg')) {
-      throw new Error('Response does not appear to be an SVG');
-    }
-    svgText = text;
-  } catch (err) {
-    console.error(`Fetch failed for "${item.name}" (${item.url}):`, err);
+  if (!svgText || !svgText.includes('<svg')) {
     return createPlaceholder(item);
   }
 
-  // Create Figma node from SVG string
   let svgNode;
   try {
     svgNode = figma.createNodeFromSvg(svgText);
@@ -115,11 +95,10 @@ async function placeAsset(item) {
 
   svgNode.name = item.name;
 
-  // Resize to target dimensions
   const size = getSize(item);
   svgNode.resize(size.w, size.h);
 
-  // Wrap in a clipping frame for circle flags
+  // Wrap circle flags in a clipping frame
   if (item.tab === 'flags' && item.shape === 'circ') {
     return applyCircleClip(svgNode, size);
   }
@@ -132,41 +111,40 @@ async function placeAsset(item) {
 // ─────────────────────────────────────────
 function applyCircleClip(innerNode, size) {
   const frame = figma.createFrame();
-  frame.name = innerNode.name;
+  frame.name         = innerNode.name;
   frame.resize(size.w, size.h);
   frame.clipsContent = true;
   frame.cornerRadius = size.w / 2;
-  frame.fills = [];
-  innerNode.x = 0;
-  innerNode.y = 0;
+  frame.fills        = [];
+  innerNode.x        = 0;
+  innerNode.y        = 0;
   frame.appendChild(innerNode);
   return frame;
 }
 
 // ─────────────────────────────────────────
-// Placeholder when SVG cannot be loaded
+// Placeholder when SVG is unavailable
 // ─────────────────────────────────────────
 async function createPlaceholder(item) {
-  const size = getSize(item);
+  const size  = getSize(item);
   const frame = figma.createFrame();
-  frame.name = item.name + ' (missing SVG)';
+  frame.name   = `${item.name} (missing SVG)`;
   frame.resize(size.w, size.h);
-  frame.fills = [{ type: 'SOLID', color: { r: 0.18, g: 0.18, b: 0.22 } }];
+  frame.fills  = [{ type: 'SOLID', color: { r: 0.18, g: 0.18, b: 0.22 } }];
 
   if (item.tab === 'flags' && item.shape === 'circ') {
     frame.cornerRadius = size.w / 2;
   }
 
-  // Load default font before creating text
   await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
 
   const text = figma.createText();
-  text.fontName = { family: 'Inter', style: 'Regular' };
-  text.characters = item.iso || item.name.substring(0, 2).toUpperCase();
-  text.fontSize = Math.max(8, Math.round(size.h * 0.3));
-  text.fills = [{ type: 'SOLID', color: { r: 0.6, g: 0.6, b: 0.7 } }];
-  text.textAlignHorizontal = 'CENTER';
-  text.textAlignVertical = 'CENTER';
+  text.fontName              = { family: 'Inter', style: 'Regular' };
+  text.characters            = item.iso || item.name.substring(0, 2).toUpperCase();
+  text.fontSize              = Math.max(8, Math.round(size.h * 0.3));
+  text.fills                 = [{ type: 'SOLID', color: { r: 0.6, g: 0.6, b: 0.7 } }];
+  text.textAlignHorizontal   = 'CENTER';
+  text.textAlignVertical     = 'CENTER';
   text.resize(size.w, size.h);
   frame.appendChild(text);
 
@@ -174,28 +152,27 @@ async function createPlaceholder(item) {
 }
 
 // ─────────────────────────────────────────
-// Determine target size for item
+// Determine target size for an item
 // ─────────────────────────────────────────
 function getSize(item) {
   if (item.tab === 'flags') return SHAPE_SIZES[item.shape] || SHAPE_SIZES.rect;
   if (item.tab === 'coats') return COAT_SIZE;
   if (item.tab === 'maps')  return MAP_SIZE;
-  return DEFAULT_SIZE;
+  return SHAPE_SIZES.rect;
 }
 
 // ─────────────────────────────────────────
-// Arrange placed nodes on canvas
+// Arrange placed nodes on the canvas
 // ─────────────────────────────────────────
 async function arrangeNodes(nodes) {
-  // Place inside a selected frame/component if one is active
-  const selection  = figma.currentPage.selection;
+  const selection   = figma.currentPage.selection;
   const targetFrame =
     selection.length === 1 &&
     (selection[0].type === 'FRAME' || selection[0].type === 'COMPONENT' || selection[0].type === 'GROUP')
       ? selection[0]
       : null;
 
-  const vp = figma.viewport.bounds;
+  const vp     = figma.viewport.bounds;
   const totalW = nodes.reduce((sum, n) => sum + n.width + ITEM_SPACING, -ITEM_SPACING);
   const maxH   = Math.max(...nodes.map(n => n.height));
 

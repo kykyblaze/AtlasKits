@@ -11,10 +11,5 @@
     "figjam",
     "slides"
   ],
-  "ui": "ui.html",
-  "networkAccess": {
-    "allowedDomains": [
-      "https://monumental-zuccutto-ce956a.netlify.app"
-    ]
-  }
+  "ui": "ui.html"
 }
