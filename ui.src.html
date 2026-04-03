@@ -32,7 +32,8 @@
     overflow: hidden;
   }
 
-  /* ── TABS ── */
+  /* ── TABS (Disabled for v1) ── */
+  /*
   .tabs {
     display: flex;
     border-bottom: 1px solid var(--border);
@@ -57,10 +58,11 @@
     border-bottom-color: var(--accent);
   }
   .tab:hover:not(.active) { color: var(--text); }
+  */
 
   /* ── TOOLBAR ── */
   .toolbar {
-    padding: 8px 10px 0;
+    padding: 8px 10px 10px;
     background: var(--bg);
     flex-shrink: 0;
     display: flex;
@@ -308,12 +310,14 @@
 </head>
 <body>
 
-<!-- TABS -->
+<!-- TABS (Disabled for v1) -->
+<!--
 <div class="tabs">
   <div class="tab active" data-tab="flags">🏳 Flags</div>
   <div class="tab" data-tab="coats">🛡 Coat of Arms</div>
   <div class="tab" data-tab="maps">🗺 Maps</div>
 </div>
+-->
 
 <!-- TOOLBAR -->
 <div class="toolbar">
@@ -773,7 +777,8 @@ function bindItemClicks() {
   });
 }
 
-// Tabs
+// Tabs (Disabled for v1)
+/*
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     const t = tab.dataset.tab;
@@ -787,6 +792,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     render();
   });
 });
+*/
 
 // Search
 document.getElementById('searchInput').addEventListener('input', e => {
