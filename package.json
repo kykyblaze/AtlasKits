@@ -4,10 +4,10 @@
   "description": "Your Figma Plugin",
   "main": "code.js",
   "scripts": {
-    "build": "node build-ui.js && tsc -p tsconfig.json",
+    "build": "node build-ui.js",
     "lint": "eslint --ext .ts,.tsx --ignore-pattern node_modules .",
     "lint:fix": "eslint --ext .ts,.tsx --ignore-pattern node_modules --fix .",
-    "watch": "npm run build -- --watch"
+    "watch": "node build-ui.js"
   },
   "author": "",
   "license": "",
