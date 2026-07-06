@@ -1,677 +1,837 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AtlasKits</title>
-<style>
-  :root {
-    --bg: #0f0f11;
-    --surface: #1a1a1f;
-    --surface2: #242429;
-    --border: #2e2e38;
-    --accent: #5b6af0;
-    --accent-dim: rgba(91,106,240,0.15);
-    --text: #e8e8f0;
-    --muted: #7a7a92;
-    --success: #34d399;
-    --font: 'Inter', system-ui, sans-serif;
-    --radius: 8px;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AtlasKits</title>
+  <style>
+    :root {
+      --bg: #0f0f11;
+      --surface: #1a1a1f;
+      --surface2: #242429;
+      --border: #2e2e38;
+      --accent: #5b6af0;
+      --accent-dim: rgba(91, 106, 240, 0.15);
+      --text: #e8e8f0;
+      --muted: #7a7a92;
+      --success: #34d399;
+      --font: 'Inter', system-ui, sans-serif;
+      --radius: 8px;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-    font-family: var(--font);
-    background: var(--bg);
-    color: var(--text);
-    font-size: 12px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 12px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-  /* ── TABS (Disabled for v1) ── */
-  /*
-  .tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    flex-shrink: 0;
-  }
-  .tab {
-    flex: 1;
-    padding: 10px 4px;
-    text-align: center;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--muted);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: color .15s, border-color .15s;
-    letter-spacing: .3px;
-    user-select: none;
-  }
-  .tab.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-  .tab:hover:not(.active) { color: var(--text); }
-  */
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+    }
 
-  /* ── TOOLBAR ── */
-  .toolbar {
-    padding: 8px 10px 10px;
-    background: var(--bg);
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+    .tab {
+      flex: 1;
+      padding: 10px 4px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+      letter-spacing: .3px;
+      user-select: none;
+    }
 
-  .search-wrap { position: relative; }
-  .search-wrap svg {
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    pointer-events: none;
-  }
-  .search-input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-size: 11px;
-    padding: 6px 8px 6px 28px;
-    outline: none;
-    transition: border-color .15s;
-  }
-  .search-input:focus { border-color: var(--accent); }
-  .search-input::placeholder { color: var(--muted); }
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
 
-  /* ── FILTER (flags only) ── */
-  .filter-bar { display: none; gap: 4px; }
-  .filter-bar.visible { display: flex; }
-  .filter-btn {
-    flex: 1;
-    padding: 5px 0;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    font-size: 10px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all .15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    letter-spacing: .2px;
-  }
-  .filter-btn.active {
-    background: var(--accent-dim);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .filter-btn:hover:not(.active) { border-color: var(--muted); color: var(--text); }
+    .tab:hover:not(.active) {
+      color: var(--text);
+    }
 
-  .filter-shape { display: inline-block; background: currentColor; flex-shrink: 0; }
-  .filter-shape.rect { width: 18px; height: 12px; border-radius: 1px; }
-  .filter-shape.sq   { width: 12px; height: 12px; border-radius: 1px; }
-  .filter-shape.circ { width: 12px; height: 12px; border-radius: 50%; }
+    /* ── TOOLBAR ── */
+    .toolbar {
+      padding: 8px 10px 10px;
+      background: var(--bg);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-  /* ── CONTENT AREA ── */
-  .content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px 10px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-  }
-  .content::-webkit-scrollbar { width: 4px; }
-  .content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .search-wrap {
+      position: relative;
+    }
 
-  /* Section label */
-  .section-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: .8px;
-    padding: 4px 0 6px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 8px;
-  }
+    .search-wrap svg {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
 
-  /* ── GRID ── */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 14px;
-  }
+    .search-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 11px;
+      padding: 6px 8px 6px 28px;
+      outline: none;
+      transition: border-color .15s;
+    }
 
-  .item {
-    position: relative;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 8px 6px 6px;
-    cursor: pointer;
-    transition: border-color .12s, background .12s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    min-width: 0;
-  }
-  .item:hover { border-color: #44445a; background: var(--surface2); }
-  .item.selected {
-    border-color: var(--accent);
-    background: var(--accent-dim);
-  }
+    .search-input:focus {
+      border-color: var(--accent);
+    }
 
-  .item-img-wrap {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .item-img-wrap img,
-  .item-img-wrap svg { display: block; max-width: 100%; }
+    .search-input::placeholder {
+      color: var(--muted);
+    }
 
-  .item-img-wrap.rect img { width: 36px; height: 24px; object-fit: cover; }
-  .item-img-wrap.sq   img { width: 24px; height: 24px; object-fit: cover; }
-  .item-img-wrap.circ img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
-  .item-img-wrap.coat img { width: 28px; height: 32px; object-fit: contain; }
-  .item-img-wrap.map  img { width: 34px; height: 26px; object-fit: contain; }
+    /* ── FILTER (flags only) ── */
+    .filter-bar {
+      display: none;
+      gap: 4px;
+    }
 
-  /* Fallback placeholder */
-  .img-placeholder {
-    background: var(--surface2);
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-size: 9px;
-  }
-  .img-placeholder.rect { width: 36px; height: 24px; }
-  .img-placeholder.sq   { width: 24px; height: 24px; }
-  .img-placeholder.circ { width: 24px; height: 24px; border-radius: 50%; }
-  .img-placeholder.coat { width: 28px; height: 32px; }
-  .img-placeholder.map  { width: 34px; height: 26px; }
+    .filter-bar.visible {
+      display: flex;
+    }
 
-  .item-name {
-    font-size: 9px;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.3;
-    max-width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 100%;
-  }
-  .item.selected .item-name { color: var(--text); }
+    .filter-btn {
+      flex: 1;
+      padding: 5px 0;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      letter-spacing: .2px;
+    }
 
-  /* Checkbox overlay */
-  .item-check {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all .12s;
-  }
-  .item.selected .item-check {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-  .item-check svg { opacity: 0; transition: opacity .12s; }
-  .item.selected .item-check svg { opacity: 1; }
+    .filter-btn.active {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
 
-  /* ── EMPTY STATE ── */
-  .empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    color: var(--muted);
-    font-size: 11px;
-    padding: 40px 20px;
-    text-align: center;
-  }
-  .empty svg { opacity: .4; }
+    .filter-btn:hover:not(.active) {
+      border-color: var(--muted);
+      color: var(--text);
+    }
 
-  /* ── FOOTER / ACTION BAR ── */
-  .footer {
-    padding: 8px 10px;
-    border-top: 1px solid var(--border);
-    background: var(--bg);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+    .filter-shape {
+      display: inline-block;
+      background: currentColor;
+      flex-shrink: 0;
+    }
 
-  .count-badge { font-size: 10px; color: var(--muted); flex: 1; }
-  .count-badge span { color: var(--text); font-weight: 600; }
+    .filter-shape.rect {
+      width: 18px;
+      height: 12px;
+      border-radius: 1px;
+    }
 
-  .btn-add {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 7px 16px;
-    cursor: pointer;
-    transition: opacity .15s, transform .1s;
-    letter-spacing: .3px;
-    min-width: 60px;
-  }
-  .btn-add:disabled { background: var(--surface2); color: var(--muted); cursor: default; }
-  .btn-add:not(:disabled):hover { opacity: .88; }
-  .btn-add:not(:disabled):active { transform: scale(.97); }
+    .filter-shape.sq {
+      width: 12px;
+      height: 12px;
+      border-radius: 1px;
+    }
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 54px;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    background: var(--success);
-    color: #0f0f11;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 20px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s, transform .2s;
-    white-space: nowrap;
-    z-index: 100;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-</style>
+    .filter-shape.circ {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    /* ── CONTENT AREA ── */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 4px 0 6px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .item {
+      position: relative;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 6px 6px;
+      cursor: pointer;
+      transition: border-color .12s, background .12s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .item:hover {
+      border-color: #44445a;
+      background: var(--surface2);
+    }
+
+    .item.selected {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .item-img-wrap {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .item-img-wrap img,
+    .item-img-wrap svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    .item-img-wrap.rect img {
+      width: 36px;
+      height: 24px;
+      object-fit: cover;
+    }
+
+    .item-img-wrap.sq img {
+      width: 24px;
+      height: 24px;
+      object-fit: cover;
+    }
+
+    .item-img-wrap.circ img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .item-img-wrap.coat img {
+      width: 28px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .item-img-wrap.map img {
+      width: 34px;
+      height: 26px;
+      object-fit: contain;
+    }
+
+    /* Fallback placeholder */
+    .img-placeholder {
+      background: var(--surface2);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .img-placeholder.rect {
+      width: 36px;
+      height: 24px;
+    }
+
+    .img-placeholder.sq {
+      width: 24px;
+      height: 24px;
+    }
+
+    .img-placeholder.circ {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .img-placeholder.map {
+      width: 34px;
+      height: 26px;
+    }
+
+    .item-name {
+      font-size: 9px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.3;
+      max-width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    .item.selected .item-name {
+      color: var(--text);
+    }
+
+    /* Checkbox overlay */
+    .item-check {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .12s;
+    }
+
+    .item.selected .item-check {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .item-check svg {
+      opacity: 0;
+      transition: opacity .12s;
+    }
+
+    .item.selected .item-check svg {
+      opacity: 1;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .empty svg {
+      opacity: .4;
+    }
+
+    /* ── FOOTER / ACTION BAR ── */
+    .footer {
+      padding: 8px 10px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .count-badge {
+      font-size: 10px;
+      color: var(--muted);
+      flex: 1;
+    }
+
+    .count-badge span {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .btn-add {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 7px 16px;
+      cursor: pointer;
+      transition: opacity .15s, transform .1s;
+      letter-spacing: .3px;
+      min-width: 60px;
+    }
+
+    .btn-add:disabled {
+      background: var(--surface2);
+      color: var(--muted);
+      cursor: default;
+    }
+
+    .btn-add:not(:disabled):hover {
+      opacity: .88;
+    }
+
+    .btn-add:not(:disabled):active {
+      transform: scale(.97);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 54px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--success);
+      color: #0f0f11;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      white-space: nowrap;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- TABS (Disabled for v1) -->
-<!--
-<div class="tabs">
-  <div class="tab active" data-tab="flags">🏳 Flags</div>
-  <div class="tab" data-tab="coats">🛡 Coat of Arms</div>
-  <div class="tab" data-tab="maps">🗺 Maps</div>
-</div>
--->
-
-<!-- TOOLBAR -->
-<div class="toolbar">
-  <div class="search-wrap">
-    <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-      <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
-      <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
-    <input class="search-input" id="searchInput" type="text" placeholder="Search by name or ISO code…" autocomplete="off"/>
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" data-tab="flags">🏳 Flags</div>
+    <div class="tab" data-tab="maps">🗺 Maps</div>
   </div>
-  <div class="filter-bar visible" id="filterBar">
-    <button class="filter-btn active" data-shape="rect">
-      <span class="filter-shape rect"></span> Rectangle
-    </button>
-    <button class="filter-btn" data-shape="sq">
-      <span class="filter-shape sq"></span> Square
-    </button>
-    <button class="filter-btn" data-shape="circ">
-      <span class="filter-shape circ"></span> Circle
-    </button>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5" />
+        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+      <input class="search-input" id="searchInput" type="text" placeholder="Search by country name or ISO code…"
+        autocomplete="off" />
+    </div>
+    <div class="filter-bar visible" id="filterBar">
+      <button class="filter-btn active" data-shape="rect">
+        <span class="filter-shape rect"></span> Rectangle
+      </button>
+      <button class="filter-btn" data-shape="sq">
+        <span class="filter-shape sq"></span> Square
+      </button>
+      <button class="filter-btn" data-shape="circ">
+        <span class="filter-shape circ"></span> Circle
+      </button>
+    </div>
   </div>
-</div>
 
-<!-- CONTENT -->
-<div class="content" id="contentArea"></div>
+  <!-- CONTENT -->
+  <div class="content" id="contentArea"></div>
 
-<!-- FOOTER -->
-<div class="footer">
-  <div class="count-badge" id="countBadge">No items selected</div>
-  <button class="btn-add" id="btnAdd" disabled>Add</button>
-</div>
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="count-badge" id="countBadge">No items selected</div>
+    <button class="btn-add" id="btnAdd" disabled>Add</button>
+  </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
 
-<!-- Injected by build-ui.js: window.ASSETS = { "flags/countries/rectangle/afghanistan": "<base64>", ... } -->
-<script>/* ASSETS_INJECT */</script>
+  <!-- Injected by build-ui.js: window.ASSETS = { "flags/countries/rectangle/afghanistan": "<base64>", ... } -->
+  <script>/* ASSETS_INJECT */</script>
 
-<script>
-// ─────────────────────────────────────────
-// ASSET KEY BUILDERS
-// Keys are lowercase paths matching the assets/ folder structure (no extension).
-// ─────────────────────────────────────────
-function flagKey(name, shape, section) {
-  const folder = { rect: 'rectangle', sq: 'square', circ: 'circle' }[shape] || 'rectangle';
-  return `flags/${section.toLowerCase()}/${folder}/${name.toLowerCase()}`;
-}
-function coatKey(name) {
-  return `coats/countries/${name.toLowerCase()} coat of arms`;
-}
-function mapKey(name) {
-  return `maps/countries/${name.toLowerCase()}`;
-}
-function continentKey(name) {
-  return `maps/continents/${name.toLowerCase()}`;
-}
+  <script>
+    // ─────────────────────────────────────────
+    // ASSET KEY BUILDERS
+    // Keys are lowercase paths matching the assets/ folder structure (no extension).
+    // ─────────────────────────────────────────
+    function flagKey(name, shape, section) {
+      const folder = { rect: 'rectangle', sq: 'square', circ: 'circle' }[shape] || 'rectangle';
+      return `flags/${section.toLowerCase()}/${folder}/${name.toLowerCase()}`;
+    }
+    function mapKey(name) {
+      const normalized = name.toLowerCase().trim();
 
-function getItemKey(item) {
-  if (state.tab === 'flags') {
-    const section = item.type === 'union' ? 'Unions' : 'Countries';
-    return flagKey(item.name, state.shape, section);
-  }
-  if (state.tab === 'coats') return coatKey(item.name);
-  if (state.tab === 'maps') {
-    return item.type === 'continent' ? continentKey(item.name) : mapKey(item.name);
-  }
-  return '';
-}
+      // Try direct path first
+      const directKey = `maps/countries/${normalized}`;
+      if (window.ASSETS && window.ASSETS[directKey]) return directKey;
 
-// ─────────────────────────────────────────
-// DATA DEFINITIONS
-// ─────────────────────────────────────────
-const UNIONS = [
-  { name: "African Union",   iso: "AU",     type: 'union' },
-  { name: "ASEAN",           iso: "ASEAN",  type: 'union' },
-  { name: "European Union",  iso: "EU",     type: 'union' },
-  { name: "NATO",            iso: "NATO",   type: 'union' },
-  { name: "UNESCO",          iso: "UNESCO", type: 'union' },
-  { name: "United Nations",  iso: "UN",     type: 'union' },
-  { name: "WHO",             iso: "WHO",    type: 'union' },
-];
+      // Search keys if there's any encoding or accent mismatch
+      if (window.ASSETS) {
+        const clean = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        for (const key of Object.keys(window.ASSETS)) {
+          if (key.startsWith("maps/countries/")) {
+            const keyParts = key.split('/');
+            const keyName = keyParts[keyParts.length - 1];
+            const cleanKeyName = keyName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            if (cleanKeyName === clean) {
+              return key;
+            }
+          }
+        }
+      }
 
-const COUNTRIES = [
-  { name: "Afghanistan",            iso: "AF" },
-  { name: "Albania",                iso: "AL" },
-  { name: "Algeria",                iso: "DZ" },
-  { name: "Andorra",                iso: "AD" },
-  { name: "Angola",                 iso: "AO" },
-  { name: "Antigua and Barbuda",    iso: "AG" },
-  { name: "Argentina",              iso: "AR" },
-  { name: "Armenia",                iso: "AM" },
-  { name: "Australia",              iso: "AU" },
-  { name: "Austria",                iso: "AT" },
-  { name: "Azerbaijan",             iso: "AZ" },
-  { name: "Bahamas",                iso: "BS" },
-  { name: "Bahrain",                iso: "BH" },
-  { name: "Bangladesh",             iso: "BD" },
-  { name: "Barbados",               iso: "BB" },
-  { name: "Belarus",                iso: "BY" },
-  { name: "Belgium",                iso: "BE" },
-  { name: "Belize",                 iso: "BZ" },
-  { name: "Benin",                  iso: "BJ" },
-  { name: "Bhutan",                 iso: "BT" },
-  { name: "Bolivia",                iso: "BO" },
-  { name: "Bosnia and Herzegovina", iso: "BA" },
-  { name: "Botswana",               iso: "BW" },
-  { name: "Brazil",                 iso: "BR" },
-  { name: "Brunei",                 iso: "BN" },
-  { name: "Bulgaria",               iso: "BG" },
-  { name: "Burkina Faso",           iso: "BF" },
-  { name: "Burundi",                iso: "BI" },
-  { name: "Cape Verde",             iso: "CV" },
-  { name: "Cambodia",               iso: "KH" },
-  { name: "Cameroon",               iso: "CM" },
-  { name: "Canada",                 iso: "CA" },
-  { name: "Central African Republic", iso: "CF" },
-  { name: "Chad",                   iso: "TD" },
-  { name: "Chile",                  iso: "CL" },
-  { name: "China",                  iso: "CN" },
-  { name: "Colombia",               iso: "CO" },
-  { name: "Comoros",                iso: "KM" },
-  { name: "Congo",                  iso: "CG" },
-  { name: "Costa Rica",             iso: "CR" },
-  { name: "Croatia",                iso: "HR" },
-  { name: "Cuba",                   iso: "CU" },
-  { name: "Cyprus",                 iso: "CY" },
-  { name: "Czech Republic",         iso: "CZ" },
-  { name: "Denmark",                iso: "DK" },
-  { name: "Djibouti",               iso: "DJ" },
-  { name: "Dominica",               iso: "DM" },
-  { name: "Dominican Republic",     iso: "DO" },
-  { name: "DR Congo",               iso: "CD" },
-  { name: "Ecuador",                iso: "EC" },
-  { name: "Egypt",                  iso: "EG" },
-  { name: "El Salvador",            iso: "SV" },
-  { name: "Equatorial Guinea",      iso: "GQ" },
-  { name: "Eritrea",                iso: "ER" },
-  { name: "Estonia",                iso: "EE" },
-  { name: "Eswatini",               iso: "SZ" },
-  { name: "Ethiopia",               iso: "ET" },
-  { name: "Fiji",                   iso: "FJ" },
-  { name: "Finland",                iso: "FI" },
-  { name: "France",                 iso: "FR" },
-  { name: "Gabon",                  iso: "GA" },
-  { name: "Gambia",                 iso: "GM" },
-  { name: "Georgia",                iso: "GE" },
-  { name: "Germany",                iso: "DE" },
-  { name: "Ghana",                  iso: "GH" },
-  { name: "Greece",                 iso: "GR" },
-  { name: "Grenada",                iso: "GD" },
-  { name: "Guatemala",              iso: "GT" },
-  { name: "Guinea",                 iso: "GN" },
-  { name: "Guinea-Bissau",          iso: "GW" },
-  { name: "Guyana",                 iso: "GY" },
-  { name: "Haiti",                  iso: "HT" },
-  { name: "Honduras",               iso: "HN" },
-  { name: "Hungary",                iso: "HU" },
-  { name: "Iceland",                iso: "IS" },
-  { name: "India",                  iso: "IN" },
-  { name: "Indonesia",              iso: "ID" },
-  { name: "Iran",                   iso: "IR" },
-  { name: "Iraq",                   iso: "IQ" },
-  { name: "Ireland",                iso: "IE" },
-  { name: "Israel",                 iso: "IL" },
-  { name: "Italy",                  iso: "IT" },
-  { name: "Jamaica",                iso: "JM" },
-  { name: "Japan",                  iso: "JP" },
-  { name: "Jordan",                 iso: "JO" },
-  { name: "Kazakhstan",             iso: "KZ" },
-  { name: "Kenya",                  iso: "KE" },
-  { name: "Kiribati",               iso: "KI" },
-  { name: "Kuwait",                 iso: "KW" },
-  { name: "Kyrgyzstan",             iso: "KG" },
-  { name: "Laos",                   iso: "LA" },
-  { name: "Latvia",                 iso: "LV" },
-  { name: "Lebanon",                iso: "LB" },
-  { name: "Lesotho",                iso: "LS" },
-  { name: "Liberia",                iso: "LR" },
-  { name: "Libya",                  iso: "LY" },
-  { name: "Liechtenstein",          iso: "LI" },
-  { name: "Lithuania",              iso: "LT" },
-  { name: "Luxembourg",             iso: "LU" },
-  { name: "Madagascar",             iso: "MG" },
-  { name: "Malawi",                 iso: "MW" },
-  { name: "Malaysia",               iso: "MY" },
-  { name: "Maldives",               iso: "MV" },
-  { name: "Mali",                   iso: "ML" },
-  { name: "Malta",                  iso: "MT" },
-  { name: "Marshall Islands",       iso: "MH" },
-  { name: "Mauritania",             iso: "MR" },
-  { name: "Mauritius",              iso: "MU" },
-  { name: "Mexico",                 iso: "MX" },
-  { name: "Micronesia",             iso: "FM" },
-  { name: "Moldova",                iso: "MD" },
-  { name: "Monaco",                 iso: "MC" },
-  { name: "Mongolia",               iso: "MN" },
-  { name: "Montenegro",             iso: "ME" },
-  { name: "Morocco",                iso: "MA" },
-  { name: "Mozambique",             iso: "MZ" },
-  { name: "Myanmar",                iso: "MM" },
-  { name: "Namibia",                iso: "NA" },
-  { name: "Nauru",                  iso: "NR" },
-  { name: "Nepal",                  iso: "NP" },
-  { name: "Netherlands",            iso: "NL" },
-  { name: "New Zealand",            iso: "NZ" },
-  { name: "Nicaragua",              iso: "NI" },
-  { name: "Niger",                  iso: "NE" },
-  { name: "Nigeria",                iso: "NG" },
-  { name: "North Korea",            iso: "KP" },
-  { name: "North Macedonia",        iso: "MK" },
-  { name: "Norway",                 iso: "NO" },
-  { name: "Oman",                   iso: "OM" },
-  { name: "Pakistan",               iso: "PK" },
-  { name: "Palau",                  iso: "PW" },
-  { name: "Palestine",              iso: "PS" },
-  { name: "Panama",                 iso: "PA" },
-  { name: "Papua New Guinea",       iso: "PG" },
-  { name: "Paraguay",               iso: "PY" },
-  { name: "Peru",                   iso: "PE" },
-  { name: "Philippines",            iso: "PH" },
-  { name: "Poland",                 iso: "PL" },
-  { name: "Portugal",               iso: "PT" },
-  { name: "Qatar",                  iso: "QA" },
-  { name: "Romania",                iso: "RO" },
-  { name: "Russia",                 iso: "RU" },
-  { name: "Rwanda",                 iso: "RW" },
-  { name: "Saint Kitts and Nevis",  iso: "KN" },
-  { name: "Saint Lucia",            iso: "LC" },
-  { name: "Saint Vincent and the Grenadines", iso: "VC" },
-  { name: "Samoa",                  iso: "WS" },
-  { name: "San Marino",             iso: "SM" },
-  { name: "São Tomé and Príncipe",  iso: "ST" },
-  { name: "Saudi Arabia",           iso: "SA" },
-  { name: "Senegal",                iso: "SN" },
-  { name: "Serbia",                 iso: "RS" },
-  { name: "Seychelles",             iso: "SC" },
-  { name: "Sierra Leone",           iso: "SL" },
-  { name: "Singapore",              iso: "SG" },
-  { name: "Slovakia",               iso: "SK" },
-  { name: "Slovenia",               iso: "SI" },
-  { name: "Solomon Islands",        iso: "SB" },
-  { name: "Somalia",                iso: "SO" },
-  { name: "South Africa",           iso: "ZA" },
-  { name: "South Korea",            iso: "KR" },
-  { name: "South Sudan",            iso: "SS" },
-  { name: "Spain",                  iso: "ES" },
-  { name: "Sri Lanka",              iso: "LK" },
-  { name: "Sudan",                  iso: "SD" },
-  { name: "Suriname",               iso: "SR" },
-  { name: "Sweden",                 iso: "SE" },
-  { name: "Switzerland",            iso: "CH" },
-  { name: "Syria",                  iso: "SY" },
-  { name: "Taiwan",                 iso: "TW" },
-  { name: "Tajikistan",             iso: "TJ" },
-  { name: "Tanzania",               iso: "TZ" },
-  { name: "Thailand",               iso: "TH" },
-  { name: "Timor-Leste",            iso: "TL" },
-  { name: "Togo",                   iso: "TG" },
-  { name: "Tonga",                  iso: "TO" },
-  { name: "Trinidad and Tobago",    iso: "TT" },
-  { name: "Tunisia",                iso: "TN" },
-  { name: "Turkey",                 iso: "TR" },
-  { name: "Turkmenistan",           iso: "TM" },
-  { name: "Tuvalu",                 iso: "TV" },
-  { name: "Uganda",                 iso: "UG" },
-  { name: "Ukraine",                iso: "UA" },
-  { name: "United Arab Emirates",   iso: "AE" },
-  { name: "United Kingdom",         iso: "GB" },
-  { name: "United States",          iso: "US" },
-  { name: "Uruguay",                iso: "UY" },
-  { name: "Uzbekistan",             iso: "UZ" },
-  { name: "Vanuatu",                iso: "VU" },
-  { name: "Vatican City",           iso: "VA" },
-  { name: "Venezuela",              iso: "VE" },
-  { name: "Vietnam",                iso: "VN" },
-  { name: "Yemen",                  iso: "YE" },
-  { name: "Zambia",                 iso: "ZM" },
-  { name: "Zimbabwe",               iso: "ZW" },
-];
+      // Fallback
+      return `maps/countries/${normalized}`;
+    }
+    function continentKey(name) {
+      return `maps/continents/${name.toLowerCase()}`;
+    }
 
-const COATS = COUNTRIES.map(c => ({ name: c.name, iso: c.iso, type: 'country' }));
+    function getItemKey(item) {
+      if (state.tab === 'flags') {
+        const section = item.type === 'organization' ? 'Organizations' : 'Countries';
+        return flagKey(item.name, state.shape, section);
+      }
+      if (state.tab === 'maps') {
+        return item.type === 'continent' ? continentKey(item.name) : mapKey(item.name);
+      }
+      return '';
+    }
 
-const CONTINENTS = [
-  { name: "Africa",        type: 'continent' },
-  { name: "Antarctica",   type: 'continent' },
-  { name: "Asia",         type: 'continent' },
-  { name: "Europe",       type: 'continent' },
-  { name: "North America",type: 'continent' },
-  { name: "Oceania",      type: 'continent' },
-  { name: "South America",type: 'continent' },
-];
+    // ─────────────────────────────────────────
+    // DATA DEFINITIONS
+    // ─────────────────────────────────────────
+    const ORGANIZATIONS = [
+      { name: "African Union", iso: "AU", type: 'organization' },
+      { name: "ASEAN", iso: "ASEAN", type: 'organization' },
+      { name: "European Union", iso: "EU", type: 'organization' },
+      { name: "NATO", iso: "NATO", type: 'organization' },
+      { name: "UNESCO", iso: "UNESCO", type: 'organization' },
+      { name: "United Nations", iso: "UN", type: 'organization' },
+      { name: "WHO", iso: "WHO", type: 'organization' },
+    ];
 
-const MAP_COUNTRIES = COUNTRIES.map(c => ({ name: c.name, iso: c.iso, type: 'country' }));
+    const COUNTRIES = [
+      { name: "Afghanistan", iso: "AF", iso3: "AFG" },
+      { name: "Albania", iso: "AL", iso3: "ALB" },
+      { name: "Algeria", iso: "DZ", iso3: "DZA" },
+      { name: "Andorra", iso: "AD", iso3: "AND" },
+      { name: "Angola", iso: "AO", iso3: "AGO" },
+      { name: "Antigua and Barbuda", iso: "AG", iso3: "ATG" },
+      { name: "Argentina", iso: "AR", iso3: "ARG" },
+      { name: "Armenia", iso: "AM", iso3: "ARM" },
+      { name: "Australia", iso: "AU", iso3: "AUS" },
+      { name: "Austria", iso: "AT", iso3: "AUT" },
+      { name: "Azerbaijan", iso: "AZ", iso3: "AZE" },
+      { name: "Bahamas", iso: "BS", iso3: "BHS" },
+      { name: "Bahrain", iso: "BH", iso3: "BHR" },
+      { name: "Bangladesh", iso: "BD", iso3: "BGD" },
+      { name: "Barbados", iso: "BB", iso3: "BRB" },
+      { name: "Belarus", iso: "BY", iso3: "BLR" },
+      { name: "Belgium", iso: "BE", iso3: "BEL" },
+      { name: "Belize", iso: "BZ", iso3: "BLZ" },
+      { name: "Benin", iso: "BJ", iso3: "BEN" },
+      { name: "Bhutan", iso: "BT", iso3: "BTN" },
+      { name: "Bolivia", iso: "BO", iso3: "BOL" },
+      { name: "Bosnia and Herzegovina", iso: "BA", iso3: "BIH" },
+      { name: "Botswana", iso: "BW", iso3: "BWA" },
+      { name: "Brazil", iso: "BR", iso3: "BRA" },
+      { name: "Brunei", iso: "BN", iso3: "BRN" },
+      { name: "Bulgaria", iso: "BG", iso3: "BGR" },
+      { name: "Burkina Faso", iso: "BF", iso3: "BFA" },
+      { name: "Burundi", iso: "BI", iso3: "BDI" },
+      { name: "Cape Verde", iso: "CV", iso3: "CPV" },
+      { name: "Cambodia", iso: "KH", iso3: "KHM" },
+      { name: "Cameroon", iso: "CM", iso3: "CMR" },
+      { name: "Canada", iso: "CA", iso3: "CAN" },
+      { name: "Central African Republic", iso: "CF", iso3: "CAF" },
+      { name: "Chad", iso: "TD", iso3: "TCD" },
+      { name: "Chile", iso: "CL", iso3: "CHL" },
+      { name: "China", iso: "CN", iso3: "CHN" },
+      { name: "Colombia", iso: "CO", iso3: "COL" },
+      { name: "Comoros", iso: "KM", iso3: "COM" },
+      { name: "Congo", iso: "CG", iso3: "COG" },
+      { name: "Costa Rica", iso: "CR", iso3: "CRI" },
+      { name: "Croatia", iso: "HR", iso3: "HRV" },
+      { name: "Cuba", iso: "CU", iso3: "CUB" },
+      { name: "Cyprus", iso: "CY", iso3: "CYP" },
+      { name: "Czech Republic", iso: "CZ", iso3: "CZE" },
+      { name: "Denmark", iso: "DK", iso3: "DNK" },
+      { name: "Djibouti", iso: "DJ", iso3: "DJI" },
+      { name: "Dominica", iso: "DM", iso3: "DMA" },
+      { name: "Dominican Republic", iso: "DO", iso3: "DOM" },
+      { name: "DR Congo", iso: "CD", iso3: "COD" },
+      { name: "Ecuador", iso: "EC", iso3: "ECU" },
+      { name: "Egypt", iso: "EG", iso3: "EGY" },
+      { name: "El Salvador", iso: "SV", iso3: "SLV" },
+      { name: "Equatorial Guinea", iso: "GQ", iso3: "GNQ" },
+      { name: "Eritrea", iso: "ER", iso3: "ERI" },
+      { name: "Estonia", iso: "EE", iso3: "EST" },
+      { name: "Eswatini", iso: "SZ", iso3: "SWZ" },
+      { name: "Ethiopia", iso: "ET", iso3: "ETH" },
+      { name: "Fiji", iso: "FJ", iso3: "FJI" },
+      { name: "Finland", iso: "FI", iso3: "FIN" },
+      { name: "France", iso: "FR", iso3: "FRA" },
+      { name: "Gabon", iso: "GA", iso3: "GAB" },
+      { name: "Gambia", iso: "GM", iso3: "GMB" },
+      { name: "Georgia", iso: "GE", iso3: "GEO" },
+      { name: "Germany", iso: "DE", iso3: "DEU" },
+      { name: "Ghana", iso: "GH", iso3: "GHA" },
+      { name: "Greece", iso: "GR", iso3: "GRC" },
+      { name: "Grenada", iso: "GD", iso3: "GRD" },
+      { name: "Guatemala", iso: "GT", iso3: "GTM" },
+      { name: "Guinea", iso: "GN", iso3: "GIN" },
+      { name: "Guinea-Bissau", iso: "GW", iso3: "GNB" },
+      { name: "Guyana", iso: "GY", iso3: "GUY" },
+      { name: "Haiti", iso: "HT", iso3: "HTI" },
+      { name: "Honduras", iso: "HN", iso3: "HND" },
+      { name: "Hungary", iso: "HU", iso3: "HUN" },
+      { name: "Iceland", iso: "IS", iso3: "ISL" },
+      { name: "India", iso: "IN", iso3: "IND" },
+      { name: "Indonesia", iso: "ID", iso3: "IDN" },
+      { name: "Iran", iso: "IR", iso3: "IRN" },
+      { name: "Iraq", iso: "IQ", iso3: "IRQ" },
+      { name: "Ireland", iso: "IE", iso3: "IRL" },
+      { name: "Israel", iso: "IL", iso3: "ISR" },
+      { name: "Italy", iso: "IT", iso3: "ITA" },
+      { name: "Jamaica", iso: "JM", iso3: "JAM" },
+      { name: "Japan", iso: "JP", iso3: "JPN" },
+      { name: "Jordan", iso: "JO", iso3: "JOR" },
+      { name: "Kazakhstan", iso: "KZ", iso3: "KAZ" },
+      { name: "Kenya", iso: "KE", iso3: "KEN" },
+      { name: "Kiribati", iso: "KI", iso3: "KIR" },
+      { name: "Kuwait", iso: "KW", iso3: "KWT" },
+      { name: "Kyrgyzstan", iso: "KG", iso3: "KGZ" },
+      { name: "Laos", iso: "LA", iso3: "LAO" },
+      { name: "Latvia", iso: "LV", iso3: "LVA" },
+      { name: "Lebanon", iso: "LB", iso3: "LBN" },
+      { name: "Lesotho", iso: "LS", iso3: "LSO" },
+      { name: "Liberia", iso: "LR", iso3: "LBR" },
+      { name: "Libya", iso: "LY", iso3: "LBY" },
+      { name: "Liechtenstein", iso: "LI", iso3: "LIE" },
+      { name: "Lithuania", iso: "LT", iso3: "LTU" },
+      { name: "Luxembourg", iso: "LU", iso3: "LUX" },
+      { name: "Madagascar", iso: "MG", iso3: "MDG" },
+      { name: "Malawi", iso: "MW", iso3: "MWI" },
+      { name: "Malaysia", iso: "MY", iso3: "MYS" },
+      { name: "Maldives", iso: "MV", iso3: "MDV" },
+      { name: "Mali", iso: "ML", iso3: "MLI" },
+      { name: "Malta", iso: "MT", iso3: "MLT" },
+      { name: "Marshall Islands", iso: "MH", iso3: "MHL" },
+      { name: "Mauritania", iso: "MR", iso3: "MRT" },
+      { name: "Mauritius", iso: "MU", iso3: "MUS" },
+      { name: "Mexico", iso: "MX", iso3: "MEX" },
+      { name: "Micronesia", iso: "FM", iso3: "FSM" },
+      { name: "Moldova", iso: "MD", iso3: "MDA" },
+      { name: "Monaco", iso: "MC", iso3: "MCO" },
+      { name: "Mongolia", iso: "MN", iso3: "MNG" },
+      { name: "Montenegro", iso: "ME", iso3: "MNE" },
+      { name: "Morocco", iso: "MA", iso3: "MAR" },
+      { name: "Mozambique", iso: "MZ", iso3: "MOZ" },
+      { name: "Myanmar", iso: "MM", iso3: "MMR" },
+      { name: "Namibia", iso: "NA", iso3: "NAM" },
+      { name: "Nauru", iso: "NR", iso3: "NRU" },
+      { name: "Nepal", iso: "NP", iso3: "NPL" },
+      { name: "Netherlands", iso: "NL", iso3: "NLD" },
+      { name: "New Zealand", iso: "NZ", iso3: "NZL" },
+      { name: "Nicaragua", iso: "NI", iso3: "NIC" },
+      { name: "Niger", iso: "NE", iso3: "NER" },
+      { name: "Nigeria", iso: "NG", iso3: "NGA" },
+      { name: "North Korea", iso: "KP", iso3: "PRK" },
+      { name: "North Macedonia", iso: "MK", iso3: "MKD" },
+      { name: "Norway", iso: "NO", iso3: "NOR" },
+      { name: "Oman", iso: "OM", iso3: "OMN" },
+      { name: "Pakistan", iso: "PK", iso3: "PAK" },
+      { name: "Palau", iso: "PW", iso3: "PLW" },
+      { name: "Palestine", iso: "PS", iso3: "PSE" },
+      { name: "Panama", iso: "PA", iso3: "PAN" },
+      { name: "Papua New Guinea", iso: "PG", iso3: "PNG" },
+      { name: "Paraguay", iso: "PY", iso3: "PRY" },
+      { name: "Peru", iso: "PE", iso3: "PER" },
+      { name: "Philippines", iso: "PH", iso3: "PHL" },
+      { name: "Poland", iso: "PL", iso3: "POL" },
+      { name: "Portugal", iso: "PT", iso3: "PRT" },
+      { name: "Qatar", iso: "QA", iso3: "QAT" },
+      { name: "Romania", iso: "RO", iso3: "ROU" },
+      { name: "Russia", iso: "RU", iso3: "RUS" },
+      { name: "Rwanda", iso: "RW", iso3: "RWA" },
+      { name: "Saint Kitts and Nevis", iso: "KN", iso3: "KNA" },
+      { name: "Saint Lucia", iso: "LC", iso3: "LCA" },
+      { name: "Saint Vincent and the Grenadines", iso: "VC", iso3: "VCT" },
+      { name: "Samoa", iso: "WS", iso3: "WSM" },
+      { name: "San Marino", iso: "SM", iso3: "SMR" },
+      { name: "São Tomé and Príncipe", iso: "ST", iso3: "STP" },
+      { name: "Saudi Arabia", iso: "SA", iso3: "SAU" },
+      { name: "Senegal", iso: "SN", iso3: "SEN" },
+      { name: "Serbia", iso: "RS", iso3: "SRB" },
+      { name: "Seychelles", iso: "SC", iso3: "SYC" },
+      { name: "Sierra Leone", iso: "SL", iso3: "SLE" },
+      { name: "Singapore", iso: "SG", iso3: "SGP" },
+      { name: "Slovakia", iso: "SK", iso3: "SVK" },
+      { name: "Slovenia", iso: "SI", iso3: "SVN" },
+      { name: "Solomon Islands", iso: "SB", iso3: "SLB" },
+      { name: "Somalia", iso: "SO", iso3: "SOM" },
+      { name: "South Africa", iso: "ZA", iso3: "ZAF" },
+      { name: "South Korea", iso: "KR", iso3: "KOR" },
+      { name: "South Sudan", iso: "SS", iso3: "SSD" },
+      { name: "Spain", iso: "ES", iso3: "ESP" },
+      { name: "Sri Lanka", iso: "LK", iso3: "LKA" },
+      { name: "Sudan", iso: "SD", iso3: "SDN" },
+      { name: "Suriname", iso: "SR", iso3: "SUR" },
+      { name: "Sweden", iso: "SE", iso3: "SWE" },
+      { name: "Switzerland", iso: "CH", iso3: "CHE" },
+      { name: "Syria", iso: "SY", iso3: "SYR" },
+      { name: "Taiwan", iso: "TW", iso3: "TWN" },
+      { name: "Tajikistan", iso: "TJ", iso3: "TJK" },
+      { name: "Tanzania", iso: "TZ", iso3: "TZA" },
+      { name: "Thailand", iso: "TH", iso3: "THA" },
+      { name: "Timor-Leste", iso: "TL", iso3: "TLS" },
+      { name: "Togo", iso: "TG", iso3: "TGO" },
+      { name: "Tonga", iso: "TO", iso3: "TON" },
+      { name: "Trinidad and Tobago", iso: "TT", iso3: "TTO" },
+      { name: "Tunisia", iso: "TN", iso3: "TUN" },
+      { name: "Turkey", iso: "TR", iso3: "TUR" },
+      { name: "Turkmenistan", iso: "TM", iso3: "TKM" },
+      { name: "Tuvalu", iso: "TV", iso3: "TUV" },
+      { name: "Uganda", iso: "UG", iso3: "UGA" },
+      { name: "Ukraine", iso: "UA", iso3: "UKR" },
+      { name: "United Arab Emirates", iso: "AE", iso3: "ARE" },
+      { name: "United Kingdom", iso: "GB", iso3: "GBR" },
+      { name: "United States", iso: "US", iso3: "USA" },
+      { name: "Uruguay", iso: "UY", iso3: "URY" },
+      { name: "Uzbekistan", iso: "UZ", iso3: "UZB" },
+      { name: "Vanuatu", iso: "VU", iso3: "VUT" },
+      { name: "Vatican City", iso: "VA", iso3: "VAT" },
+      { name: "Venezuela", iso: "VE", iso3: "VEN" },
+      { name: "Vietnam", iso: "VN", iso3: "VNM" },
+      { name: "Yemen", iso: "YE", iso3: "YEM" },
+      { name: "Zambia", iso: "ZM", iso3: "ZMB" },
+      { name: "Zimbabwe", iso: "ZW", iso3: "ZWE" },
+    ];
 
-// ─────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────
-const MAX_SELECT = 10;
+    const CONTINENTS = [
+      { name: "Africa", type: 'continent' },
+      { name: "Antarctica", type: 'continent' },
+      { name: "Asia", type: 'continent' },
+      { name: "Europe", type: 'continent' },
+      { name: "North America", type: 'continent' },
+      { name: "Oceania", type: 'continent' },
+      { name: "South America", type: 'continent' },
+    ];
 
-let state = {
-  tab:      'flags',  // 'flags' | 'coats' | 'maps'
-  shape:    'rect',   // 'rect' | 'sq' | 'circ'
-  query:    '',
-  selected: new Set(), // Set of item keys e.g. "flags:country:US"
-};
+    const MAP_COUNTRIES = COUNTRIES.map(c => ({ name: c.name, iso: c.iso, iso3: c.iso3, type: 'country' }));
 
-// ─────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────
-function itemKey(tab, item) {
-  const id         = item.iso || item.name;
-  const typePrefix = item.type ? `${item.type}:` : '';
-  return `${tab}:${typePrefix}${id}`;
-}
+    // ─────────────────────────────────────────
+    // STATE
+    // ─────────────────────────────────────────
+    const MAX_SELECT = 10;
 
-function filterItems(items, query, hasIso = true) {
-  if (!query) return items;
-  const q = query.toLowerCase().trim();
-  return items.filter(i => {
-    const nameMatch = i.name.toLowerCase().includes(q);
-    const isoMatch  = hasIso && i.iso && i.iso.toLowerCase().includes(q);
-    return nameMatch || isoMatch;
-  });
-}
+    let state = {
+      tab: 'flags',  // 'flags' | 'maps'
+      shape: 'rect',   // 'rect' | 'sq' | 'circ'
+      query: '',
+      selected: new Set(), // Set of item keys e.g. "flags:country:US"
+    };
 
-function imgClass() {
-  if (state.tab === 'flags') return state.shape;
-  if (state.tab === 'coats') return 'coat';
-  return 'map';
-}
+    // ─────────────────────────────────────────
+    // HELPERS
+    // ─────────────────────────────────────────
+    function itemKey(tab, item) {
+      const id = item.iso || item.name;
+      const typePrefix = item.type ? `${item.type}:` : '';
+      return `${tab}:${typePrefix}${id}`;
+    }
 
-// ─────────────────────────────────────────
-// RENDER HELPERS
-// ─────────────────────────────────────────
-function renderImg(item) {
-  const cls = imgClass();
-  const key = getItemKey(item);
-  const b64 = (window.ASSETS && window.ASSETS[key]) || '';
+    function filterItems(items, query, hasIso = true) {
+      if (!query) return items;
+      const q = query.toLowerCase().trim();
+      return items.filter(i => {
+        const nameMatch = i.name.toLowerCase().includes(q);
+        const isoMatch = hasIso && (
+          (i.iso && i.iso.toLowerCase().includes(q)) ||
+          (i.iso3 && i.iso3.toLowerCase().includes(q))
+        );
+        return nameMatch || isoMatch;
+      });
+    }
 
-  if (!b64) {
-    return `<div class="item-img-wrap ${cls}">
+    function imgClass() {
+      if (state.tab === 'flags') return state.shape;
+      return 'map';
+    }
+
+    // ─────────────────────────────────────────
+    // RENDER HELPERS
+    // ─────────────────────────────────────────
+    function renderImg(item) {
+      const cls = imgClass();
+      const key = getItemKey(item);
+      const b64 = (window.ASSETS && window.ASSETS[key]) || '';
+
+      if (!b64) {
+        return `<div class="item-img-wrap ${cls}">
       <div class="img-placeholder ${cls}">${item.iso || '?'}</div>
     </div>`;
-  }
+      }
 
-  return `<div class="item-img-wrap ${cls}">
+      return `<div class="item-img-wrap ${cls}">
     <img src="data:image/svg+xml;base64,${b64}" alt="${item.name}">
   </div>`;
-}
+    }
 
-function renderItem(item) {
-  const key = itemKey(state.tab, item);
-  const sel = state.selected.has(key) ? 'selected' : '';
-  return `<div class="item ${sel}" data-key="${key}" data-name="${item.name}">
+    function renderItem(item) {
+      const key = itemKey(state.tab, item);
+      const sel = state.selected.has(key) ? 'selected' : '';
+      return `<div class="item ${sel}" data-key="${key}" data-name="${item.name}">
     ${renderImg(item)}
     <div class="item-name">${item.name}</div>
     <div class="item-check">
@@ -680,212 +840,204 @@ function renderItem(item) {
       </svg>
     </div>
   </div>`;
-}
+    }
 
-function renderSection(label, items) {
-  if (!items.length) return '';
-  return `
+    function renderSection(label, items) {
+      if (!items.length) return '';
+      return `
     <div class="section-label">${label} <span style="color:var(--accent);font-weight:700">${items.length}</span></div>
     <div class="grid">${items.map(renderItem).join('')}</div>
   `;
-}
+    }
 
-function emptyHTML() {
-  return `<div class="empty">
+    function emptyHTML() {
+      return `<div class="empty">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
       <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
       <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
     No results found
   </div>`;
-}
-
-// ─────────────────────────────────────────
-// RENDER
-// ─────────────────────────────────────────
-function render() {
-  const content = document.getElementById('contentArea');
-  const q       = state.query;
-
-  document.getElementById('filterBar').classList.toggle('visible', state.tab === 'flags');
-
-  let html = '';
-
-  if (state.tab === 'flags') {
-    const unions    = filterItems(UNIONS, q);
-    const countries = filterItems(COUNTRIES.map(c => ({ ...c, type: 'country' })), q);
-    if (!unions.length && !countries.length) {
-      html = emptyHTML();
-    } else {
-      html += renderSection('Unions', unions);
-      html += renderSection('Countries', countries);
     }
-  } else if (state.tab === 'coats') {
-    const items = filterItems(COATS, q);
-    html = items.length ? renderSection('Countries', items) : emptyHTML();
-  } else {
-    const continents = filterItems(CONTINENTS, q, false);
-    const countries  = filterItems(MAP_COUNTRIES, q);
-    if (!continents.length && !countries.length) {
-      html = emptyHTML();
-    } else {
-      html += renderSection('Continents', continents);
-      html += renderSection('Countries', countries);
-    }
-  }
 
-  content.innerHTML = html;
-  updateFooter();
-  bindItemClicks();
-}
+    // ─────────────────────────────────────────
+    // RENDER
+    // ─────────────────────────────────────────
+    function render() {
+      const content = document.getElementById('contentArea');
+      const q = state.query;
 
-function updateFooter() {
-  const count = state.selected.size;
-  const badge = document.getElementById('countBadge');
-  const btn   = document.getElementById('btnAdd');
-  if (count === 0) {
-    badge.innerHTML  = 'No items selected';
-    btn.textContent  = 'Add';
-    btn.disabled     = true;
-  } else {
-    badge.innerHTML = `<span>${count}</span> item${count !== 1 ? 's' : ''} selected`;
-    btn.textContent = `Add ${count}`;
-    btn.disabled    = false;
-  }
-}
+      document.getElementById('filterBar').classList.toggle('visible', state.tab === 'flags');
 
-// ─────────────────────────────────────────
-// EVENTS
-// ─────────────────────────────────────────
-function bindItemClicks() {
-  document.querySelectorAll('.item').forEach(el => {
-    el.addEventListener('click', () => {
-      const key = el.dataset.key;
-      if (state.selected.has(key)) {
-        state.selected.delete(key);
-        el.classList.remove('selected');
-      } else {
-        if (state.selected.size >= MAX_SELECT) {
-          showToast(`Max ${MAX_SELECT} items at a time`);
-          return;
+      let html = '';
+
+      if (state.tab === 'flags') {
+        const organizations = filterItems(ORGANIZATIONS, q);
+        const countries = filterItems(COUNTRIES.map(c => ({ ...c, type: 'country' })), q);
+        if (!organizations.length && !countries.length) {
+          html = emptyHTML();
+        } else {
+          html += renderSection('Organizations', organizations);
+          html += renderSection('Countries', countries);
         }
-        state.selected.add(key);
-        el.classList.add('selected');
+      } else {
+        const continents = filterItems(CONTINENTS, q, false);
+        const countries = filterItems(MAP_COUNTRIES, q);
+        if (!continents.length && !countries.length) {
+          html = emptyHTML();
+        } else {
+          html += renderSection('Continents', continents);
+          html += renderSection('Countries', countries);
+        }
       }
+
+      content.innerHTML = html;
       updateFooter();
-    });
-  });
-}
-
-// Tabs (Disabled for v1)
-/*
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const t = tab.dataset.tab;
-    if (t === state.tab) return;
-    state.tab   = t;
-    state.query = '';
-    state.selected.clear();
-    document.getElementById('searchInput').value = '';
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-    tab.classList.add('active');
-    render();
-  });
-});
-*/
-
-// Search
-document.getElementById('searchInput').addEventListener('input', e => {
-  state.query = e.target.value;
-  render();
-});
-
-// Filter buttons
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.shape = btn.dataset.shape;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    render();
-  });
-});
-
-// Add button — resolves each selected key to its SVG text, sends to code.js
-document.getElementById('btnAdd').addEventListener('click', () => {
-  if (state.selected.size === 0) return;
-
-  const items = [];
-
-  state.selected.forEach(key => {
-    // Parse key: "tab:type:id"
-    const [tab, ...rest]  = key.split(':');
-    const id              = rest.slice(1).join(':');
-    const type            = rest[0];
-
-    let found = null;
-
-    if (tab === 'flags') {
-      const pool = type === 'union' ? UNIONS : COUNTRIES;
-      found = pool.find(i => i.iso === id || i.name === id);
-      if (found) found = { ...found, type: type || 'country' };
-    } else if (tab === 'coats') {
-      found = COATS.find(i => i.iso === id || i.name === id);
-    } else {
-      const pool = type === 'continent' ? CONTINENTS : MAP_COUNTRIES;
-      found = pool.find(i => i.iso === id || i.name === id);
+      bindItemClicks();
     }
 
-    if (!found) return;
-
-    // Build the asset key and decode SVG text
-    let assetKey = '';
-    if (tab === 'flags') {
-      const section = found.type === 'union' ? 'Unions' : 'Countries';
-      assetKey = flagKey(found.name, state.shape, section);
-    } else if (tab === 'coats') {
-      assetKey = coatKey(found.name);
-    } else {
-      assetKey = found.type === 'continent' ? continentKey(found.name) : mapKey(found.name);
+    function updateFooter() {
+      const count = state.selected.size;
+      const badge = document.getElementById('countBadge');
+      const btn = document.getElementById('btnAdd');
+      if (count === 0) {
+        badge.innerHTML = 'No items selected';
+        btn.textContent = 'Add';
+        btn.disabled = true;
+      } else {
+        badge.innerHTML = `<span>${count}</span> item${count !== 1 ? 's' : ''} selected`;
+        btn.textContent = `Add ${count}`;
+        btn.disabled = false;
+      }
     }
 
-    const b64     = (window.ASSETS && window.ASSETS[assetKey]) || '';
-    const svgText = b64 ? atob(b64) : '';
+    // ─────────────────────────────────────────
+    // EVENTS
+    // ─────────────────────────────────────────
+    function bindItemClicks() {
+      document.querySelectorAll('.item').forEach(el => {
+        el.addEventListener('click', () => {
+          const key = el.dataset.key;
+          if (state.selected.has(key)) {
+            state.selected.delete(key);
+            el.classList.remove('selected');
+          } else {
+            if (state.selected.size >= MAX_SELECT) {
+              showToast(`Max ${MAX_SELECT} items at a time`);
+              return;
+            }
+            state.selected.add(key);
+            el.classList.add('selected');
+          }
+          updateFooter();
+        });
+      });
+    }
 
-    items.push({
-      name:    found.name,
-      iso:     found.iso || '',
-      svgText,
-      tab,
-      shape:   tab === 'flags' ? state.shape : null,
+    // Tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const t = tab.dataset.tab;
+        if (t === state.tab) return;
+        state.tab = t;
+        state.query = '';
+        state.selected.clear();
+        document.getElementById('searchInput').value = '';
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        tab.classList.add('active');
+        render();
+      });
     });
-  });
 
-  parent.postMessage({ pluginMessage: { type: 'add-assets', items } }, '*');
-  state.selected.clear();
-  showToast(`Added ${items.length} item${items.length !== 1 ? 's' : ''}`);
-  render();
-});
+    // Search
+    document.getElementById('searchInput').addEventListener('input', e => {
+      state.query = e.target.value;
+      render();
+    });
 
-// Toast
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.shape = btn.dataset.shape;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+      });
+    });
 
-// Messages from plugin
-window.addEventListener('message', e => {
-  const msg = e.data.pluginMessage;
-  if (!msg) return;
-  if (msg.type === 'add-success') showToast(`Added ${msg.count} item${msg.count !== 1 ? 's' : ''} ✓`);
-  if (msg.type === 'add-error')   showToast('Error: ' + msg.message);
-});
+    // Add button — resolves each selected key to its SVG text, sends to code.js
+    document.getElementById('btnAdd').addEventListener('click', () => {
+      if (state.selected.size === 0) return;
 
-// ─────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────
-render();
-</script>
+      const items = [];
+
+      state.selected.forEach(key => {
+        // Parse key: "tab:type:id"
+        const [tab, ...rest] = key.split(':');
+        const id = rest.slice(1).join(':');
+        const type = rest[0];
+
+        let found = null;
+
+        if (tab === 'flags') {
+          const pool = type === 'organization' ? ORGANIZATIONS : COUNTRIES;
+          found = pool.find(i => i.iso === id || i.name === id);
+          if (found) found = { ...found, type: type || 'country' };
+        } else {
+          const pool = type === 'continent' ? CONTINENTS : MAP_COUNTRIES;
+          found = pool.find(i => i.iso === id || i.name === id);
+        }
+
+        if (!found) return;
+
+        // Build the asset key and decode SVG text
+        let assetKey = '';
+        if (tab === 'flags') {
+          const section = found.type === 'organization' ? 'Organizations' : 'Countries';
+          assetKey = flagKey(found.name, state.shape, section);
+        } else {
+          assetKey = found.type === 'continent' ? continentKey(found.name) : mapKey(found.name);
+        }
+
+        const b64 = (window.ASSETS && window.ASSETS[assetKey]) || '';
+        const svgText = b64 ? atob(b64) : '';
+
+        items.push({
+          name: found.name,
+          iso: found.iso || '',
+          svgText,
+          tab,
+          shape: tab === 'flags' ? state.shape : null,
+        });
+      });
+
+      parent.postMessage({ pluginMessage: { type: 'add-assets', items } }, '*');
+      state.selected.clear();
+      showToast(`Added ${items.length} item${items.length !== 1 ? 's' : ''}`);
+      render();
+    });
+
+    // Toast
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    // Messages from plugin
+    window.addEventListener('message', e => {
+      const msg = e.data.pluginMessage;
+      if (!msg) return;
+      if (msg.type === 'add-success') showToast(`Added ${msg.count} item${msg.count !== 1 ? 's' : ''} ✓`);
+      if (msg.type === 'add-error') showToast('Error: ' + msg.message);
+    });
+
+    // ─────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────
+    render();
+  </script>
 </body>
+
 </html>
