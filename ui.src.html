@@ -395,7 +395,7 @@ function continentKey(name) {
 
 function getItemKey(item) {
   if (state.tab === 'flags') {
-    const section = item.type === 'union' ? 'Unions' : 'Countries';
+    const section = item.type === 'organization' ? 'Organizations' : 'Countries';
     return flagKey(item.name, state.shape, section);
   }
   if (state.tab === 'coats') return coatKey(item.name);
@@ -408,14 +408,14 @@ function getItemKey(item) {
 // ─────────────────────────────────────────
 // DATA DEFINITIONS
 // ─────────────────────────────────────────
-const UNIONS = [
-  { name: "African Union",   iso: "AU",     type: 'union' },
-  { name: "ASEAN",           iso: "ASEAN",  type: 'union' },
-  { name: "European Union",  iso: "EU",     type: 'union' },
-  { name: "NATO",            iso: "NATO",   type: 'union' },
-  { name: "UNESCO",          iso: "UNESCO", type: 'union' },
-  { name: "United Nations",  iso: "UN",     type: 'union' },
-  { name: "WHO",             iso: "WHO",    type: 'union' },
+const ORGANIZATIONS = [
+  { name: "African Union",   iso: "AU",     type: 'organization' },
+  { name: "ASEAN",           iso: "ASEAN",  type: 'organization' },
+  { name: "European Union",  iso: "EU",     type: 'organization' },
+  { name: "NATO",            iso: "NATO",   type: 'organization' },
+  { name: "UNESCO",          iso: "UNESCO", type: 'organization' },
+  { name: "United Nations",  iso: "UN",     type: 'organization' },
+  { name: "WHO",             iso: "WHO",    type: 'organization' },
 ];
 
 const COUNTRIES = [
@@ -733,12 +733,12 @@ function render() {
   let html = '';
 
   if (state.tab === 'flags') {
-    const unions    = filterItems(UNIONS, q);
+    const organizations = filterItems(ORGANIZATIONS, q);
     const countries = filterItems(COUNTRIES.map(c => ({ ...c, type: 'country' })), q);
-    if (!unions.length && !countries.length) {
+    if (!organizations.length && !countries.length) {
       html = emptyHTML();
     } else {
-      html += renderSection('Unions', unions);
+      html += renderSection('Organizations', organizations);
       html += renderSection('Countries', countries);
     }
   } else if (state.tab === 'coats') {
@@ -844,7 +844,7 @@ document.getElementById('btnAdd').addEventListener('click', () => {
     let found = null;
 
     if (tab === 'flags') {
-      const pool = type === 'union' ? UNIONS : COUNTRIES;
+      const pool = type === 'organization' ? ORGANIZATIONS : COUNTRIES;
       found = pool.find(i => i.iso === id || i.name === id);
       if (found) found = { ...found, type: type || 'country' };
     } else if (tab === 'coats') {
@@ -859,7 +859,7 @@ document.getElementById('btnAdd').addEventListener('click', () => {
     // Build the asset key and decode SVG text
     let assetKey = '';
     if (tab === 'flags') {
-      const section = found.type === 'union' ? 'Unions' : 'Countries';
+      const section = found.type === 'organization' ? 'Organizations' : 'Countries';
       assetKey = flagKey(found.name, state.shape, section);
     } else if (tab === 'coats') {
       assetKey = coatKey(found.name);
