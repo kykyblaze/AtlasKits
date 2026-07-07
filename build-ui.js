@@ -1,15 +1,27 @@
 #!/usr/bin/env node
 // build-ui.js
-// Reads every SVG from assets/, base64-encodes each one,
-// injects them as window.ASSETS into ui.src.html → ui.html.
+// Assembles ui.html from separate source files:
+//   src/ui.css   → inlined into <style>
+//   src/data.json → injected as JS globals (ORGANIZATIONS, COUNTRIES, CONTINENTS)
+//   src/ui.js    → inlined into <script>
+//   assets/**/*.svg → base64-encoded into window.ASSETS
+//
+// Output: ui.html (single self-contained file for Figma)
 
 const fs   = require('fs');
 const path = require('path');
 
+// ── Paths ────────────────────────────────────────────────────────────────
 const ASSETS_DIR  = path.join(__dirname, 'assets');
+const SRC_DIR     = path.join(__dirname, 'src');
 const TEMPLATE    = path.join(__dirname, 'ui.src.html');
 const OUTPUT      = path.join(__dirname, 'ui.html');
-const PLACEHOLDER = '/* ASSETS_INJECT */';
+
+// ── Placeholders in ui.src.html ──────────────────────────────────────────
+const PH_ASSETS = '/* ASSETS_INJECT */';
+const PH_CSS    = '/* CSS_INJECT */';
+const PH_DATA   = '/* DATA_INJECT */';
+const PH_JS     = '/* JS_INJECT */';
 
 // ── Walk assets/, build lowercase-keyed base64 map ───────────────────────
 function buildAssetMap(dir) {
@@ -36,27 +48,67 @@ function buildAssetMap(dir) {
   return map;
 }
 
-// ── Main ─────────────────────────────────────────────────────────────────
-const map   = buildAssetMap(ASSETS_DIR);
-const count = Object.keys(map).length;
+// ── Read a source file or exit with a clear error ────────────────────────
+function readSource(filePath) {
+  if (!fs.existsSync(filePath)) {
+    console.error(`✗ Source file not found: ${filePath}`);
+    process.exit(1);
+  }
+  return fs.readFileSync(filePath, 'utf8');
+}
 
-if (count === 0) {
+// ── Build data injection string from data.json ───────────────────────────
+function buildDataInjection() {
+  const data = JSON.parse(readSource(path.join(SRC_DIR, 'data.json')));
+  const lines = [];
+  lines.push(`const ORGANIZATIONS = ${JSON.stringify(data.organizations)};`);
+  lines.push(`const COUNTRIES = ${JSON.stringify(data.countries)};`);
+  lines.push(`const CONTINENTS = ${JSON.stringify(data.continents)};`);
+  return lines.join('\n');
+}
+
+// ── Main ─────────────────────────────────────────────────────────────────
+const assetMap  = buildAssetMap(ASSETS_DIR);
+const assetCount = Object.keys(assetMap).length;
+
+if (assetCount === 0) {
   console.error('✗ No SVG files found in assets/');
   process.exit(1);
 }
 
-const template = fs.readFileSync(TEMPLATE, 'utf8');
+let template = readSource(TEMPLATE);
 
-if (!template.includes(PLACEHOLDER)) {
-  console.error(`✗ Placeholder "${PLACEHOLDER}" not found in ui.src.html`);
-  process.exit(1);
+// Verify all placeholders exist
+const placeholders = [PH_ASSETS, PH_CSS, PH_DATA, PH_JS];
+for (const ph of placeholders) {
+  if (!template.includes(ph)) {
+    console.error(`✗ Placeholder "${ph}" not found in ui.src.html`);
+    process.exit(1);
+  }
 }
 
-const injection = `window.ASSETS = ${JSON.stringify(map)};`;
-const output    = template.replace(PLACEHOLDER, injection);
+// Inject CSS
+const css = readSource(path.join(SRC_DIR, 'ui.css'));
+template = template.replace(PH_CSS, css);
 
-fs.writeFileSync(OUTPUT, output, 'utf8');
+// Inject asset map
+const assetsInjection = `window.ASSETS = ${JSON.stringify(assetMap)};`;
+template = template.replace(PH_ASSETS, assetsInjection);
 
-const kb = (Buffer.byteLength(output, 'utf8') / 1024).toFixed(1);
-console.log(`✓  Bundled ${count} SVGs`);
+// Inject data
+const dataInjection = buildDataInjection();
+template = template.replace(PH_DATA, dataInjection);
+
+// Inject JS
+const js = readSource(path.join(SRC_DIR, 'ui.js'));
+template = template.replace(PH_JS, js);
+
+// Write output
+fs.writeFileSync(OUTPUT, template, 'utf8');
+
+const kb = (Buffer.byteLength(template, 'utf8') / 1024).toFixed(1);
+console.log(`✓  Bundled ${assetCount} SVGs`);
+console.log(`✓  Inlined: ui.css (${(Buffer.byteLength(css, 'utf8') / 1024).toFixed(1)} KB)`);
+console.log(`✓  Inlined: data.json → JS globals`);
+console.log(`✓  Inlined: ui.js (${(Buffer.byteLength(js, 'utf8') / 1024).toFixed(1)} KB)`);
 console.log(`✓  Written ui.html (${kb} KB)`);
