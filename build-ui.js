@@ -20,12 +20,12 @@ function buildAssetMap(dir) {
       const full = path.join(current, entry.name);
       if (entry.isDirectory()) {
         walk(full);
-      } else if (/\.svgg?$/i.test(entry.name)) {
+      } else if (/\.svg$/i.test(entry.name)) {
         // key = lowercase relative path, no extension, forward slashes
         const key = path
           .relative(ASSETS_DIR, full)
           .replace(/\\/g, '/')
-          .replace(/\.svgg?$/i, '')
+          .replace(/\.svg$/i, '')
           .toLowerCase();
         map[key] = Buffer.from(fs.readFileSync(full, 'utf8')).toString('base64');
       }

@@ -5,8 +5,8 @@
   "main": "code.js",
   "scripts": {
     "build": "node build-ui.js",
-    "lint": "eslint --ext .ts,.tsx --ignore-pattern node_modules .",
-    "lint:fix": "eslint --ext .ts,.tsx --ignore-pattern node_modules --fix .",
+    "lint": "eslint --ext .js --ignore-pattern node_modules .",
+    "lint:fix": "eslint --ext .js --ignore-pattern node_modules --fix .",
     "watch": "node build-ui.js"
   },
   "author": "",
