@@ -7,8 +7,8 @@
   <title>AtlasKits</title>
   <style>
     :root {
-      --bg: #0f0f11;
-      --surface: #1a1a1f;
+      --bg: #212529;
+      --surface: #1e2124;
       --surface2: #242429;
       --border: #2e2e38;
       --accent: #5b6af0;
@@ -773,7 +773,6 @@
     // ─────────────────────────────────────────
     // STATE
     // ─────────────────────────────────────────
-    const MAX_SELECT = 10;
 
     let state = {
       tab: 'flags',  // 'flags' | 'maps'
@@ -922,10 +921,6 @@
             state.selected.delete(key);
             el.classList.remove('selected');
           } else {
-            if (state.selected.size >= MAX_SELECT) {
-              showToast(`Max ${MAX_SELECT} items at a time`);
-              return;
-            }
             state.selected.add(key);
             el.classList.add('selected');
           }
