@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────
-// AtlasKits – Figma Plugin (code.js)
+// FlagMap – Figma Plugin (code.js)
 // Supports: Figma Design, FigJam, Figma Slides
 // SVGs are bundled locally — no network requests needed.
 // ─────────────────────────────────────────────────────────────────
@@ -30,7 +30,7 @@ function ensureFont() {
 figma.showUI(__html__, {
   width:       PLUGIN_WIDTH,
   height:      PLUGIN_HEIGHT,
-  title:       "AtlasKits",
+  title:       "FlagMap",
   themeColors: true,
 });
 

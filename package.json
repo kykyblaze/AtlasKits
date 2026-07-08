@@ -1,5 +1,5 @@
 {
-  "name": "atlaskits",
+  "name": "flagmap",
   "version": "1.0.0",
   "description": "Figma plugin for browsing and inserting country flags, maps, and continent maps as SVG nodes.",
   "main": "code.js",

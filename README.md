@@ -1,4 +1,4 @@
-# AtlasKits
+# FlagMap
 
 A Figma plugin for browsing and inserting country flags, maps, and continent maps as SVG nodes onto the canvas.
 

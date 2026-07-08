@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────
-// AtlasKits – UI Logic
+// FlagMap – UI Logic
 // Data (ORGANIZATIONS, COUNTRIES, CONTINENTS) is injected by build-ui.js
 // Assets (window.ASSETS) is injected by build-ui.js
 // ─────────────────────────────────────────
