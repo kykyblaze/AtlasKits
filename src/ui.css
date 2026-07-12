@@ -1,14 +1,15 @@
 :root {
-  --bg: #212529;
-  --surface: #1e2124;
-  --surface2: #242429;
-  --border: #2e2e38;
+  --bg: #ffffff;
+  --surface: #f3f4f6;
+  --surface2: #e5e7eb;
+  --border: #e5e7eb;
   --accent: #5b6af0;
-  --accent-dim: rgba(91, 106, 240, 0.15);
-  --text: #e8e8f0;
-  --muted: #7a7a92;
-  --item-name: #e9edf1;
-  --success: #34d399;
+  --accent-dim: rgba(91, 106, 240, 0.08);
+  --text: #1f2937;
+  --muted: #6b7280;
+  --hover: #dce0e3;
+  --item-name: #374151;
+  --success: #10b981;
   --font: 'Inter', system-ui, sans-serif;
   --radius: 8px;
 }
@@ -221,7 +222,7 @@ body {
 }
 
 .item:hover {
-  border-color: #44445a;
+  border-color: var(--hover);
   background: var(--surface2);
 }
 
@@ -420,7 +421,7 @@ body {
   left: 50%;
   transform: translateX(-50%) translateY(10px);
   background: var(--success);
-  color: #0f0f11;
+  color: #ffffff;
   font-size: 11px;
   font-weight: 600;
   padding: 6px 14px;
