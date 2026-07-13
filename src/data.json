@@ -1,6 +1,6 @@
 {
   "organizations": [
-    { "name": "African Union", "iso": "AU", "type": "organization" },
+    { "name": "African Union", "type": "organization" },
     { "name": "ASEAN", "iso": "ASEAN", "type": "organization" },
     { "name": "European Union", "iso": "EU", "type": "organization" },
     { "name": "NATO", "iso": "NATO", "type": "organization" },

@@ -79,7 +79,8 @@ function buildAssetMap(dir) {
         try {
           const result = optimize(raw, { path: full, ...SVGO_CONFIG });
           minified = result.data;
-        } catch (_e) {
+        } catch (err) {
+          console.warn(`⚠  svgo failed on ${full}: ${err.message}`);
           skipped++;
         }
 
@@ -113,7 +114,7 @@ function buildDataInjection() {
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────
-console.log('⏳ Minifying SVGs with svgo…');
+console.log('Minifying SVGs with svgo…');
 const assetMap   = buildAssetMap(ASSETS_DIR);
 const assetCount = Object.keys(assetMap).length;
 
@@ -153,8 +154,9 @@ template = template.replace(PH_JS, js);
 // Write output
 fs.writeFileSync(OUTPUT, template, 'utf8');
 
-const kb = (Buffer.byteLength(template, 'utf8') / 1024).toFixed(1);
-const mb = (Buffer.byteLength(template, 'utf8') / 1024 / 1024).toFixed(2);
+const bytes = Buffer.byteLength(template, 'utf8');
+const kb = (bytes / 1024).toFixed(1);
+const mb = (bytes / 1024 / 1024).toFixed(2);
 console.log(`✓  Bundled ${assetCount} SVGs (raw strings, svgo-minified)`);
 console.log(`✓  Inlined: ui.css (${(Buffer.byteLength(css, 'utf8') / 1024).toFixed(1)} KB)`);
 console.log(`✓  Inlined: data.json → JS globals`);
@@ -162,7 +164,7 @@ console.log(`✓  Inlined: ui.js (${(Buffer.byteLength(js, 'utf8') / 1024).toFix
 console.log(`✓  Written ui.html → ${kb} KB (${mb} MB)`);
 
 if (parseFloat(mb) > 15) {
-  console.warn(`⚠  ui.html is ${mb} MB — still exceeds Figma's 15 MB publish limit!`);
+  console.warn(`ui.html is ${mb} MB — still exceeds Figma's 15 MB publish limit!`);
 } else {
-  console.log(`✅ Under Figma's 15 MB limit ✓`);
+  console.log(`Under Figma's 15 MB limit ✓`);
 }

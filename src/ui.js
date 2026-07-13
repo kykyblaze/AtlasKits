@@ -58,7 +58,17 @@ function assetPathKey(item) {
 // ─────────────────────────────────────────
 // DERIVED DATA
 // ─────────────────────────────────────────
-const MAP_COUNTRIES = COUNTRIES.map(c => ({ name: c.name, iso: c.iso, iso3: c.iso3, type: 'country' }));
+const MAP_COUNTRIES  = COUNTRIES.map(c => ({ name: c.name, iso: c.iso, iso3: c.iso3, type: 'country' }));
+const FLAG_COUNTRIES = COUNTRIES.map(c => ({ ...c, type: 'country' }));
+
+// Cache data URIs so encodeURIComponent isn't called on every render
+const dataUriCache = {};
+function getDataUri(key, svgRaw) {
+  if (!dataUriCache[key]) {
+    dataUriCache[key] = 'data:image/svg+xml,' + encodeURIComponent(svgRaw);
+  }
+  return dataUriCache[key];
+}
 
 // ─────────────────────────────────────────
 // STATE
@@ -117,7 +127,7 @@ function renderImg(item) {
   }
 
   // Use a URL-encoded data URI — no base64 overhead, works in all browsers
-  const dataUri = 'data:image/svg+xml,' + encodeURIComponent(svgRaw);
+  const dataUri = getDataUri(key, svgRaw);
   return `<div class="item-img-wrap ${cls}">
     <img src="${dataUri}" alt="${escapeHtml(item.name)}">
   </div>`;
@@ -168,7 +178,7 @@ function render() {
 
   if (state.tab === 'flags') {
     const organizations = filterItems(ORGANIZATIONS, q);
-    const countries = filterItems(COUNTRIES.map(c => ({ ...c, type: 'country' })), q);
+    const countries = filterItems(FLAG_COUNTRIES, q);
     if (!organizations.length && !countries.length) {
       html = emptyHTML();
     } else {
@@ -188,7 +198,6 @@ function render() {
 
   content.innerHTML = html;
   updateFooter();
-  bindItemClicks();
 }
 
 function updateFooter() {
@@ -209,21 +218,20 @@ function updateFooter() {
 // ─────────────────────────────────────────
 // EVENTS
 // ─────────────────────────────────────────
-function bindItemClicks() {
-  document.querySelectorAll('.item').forEach(el => {
-    el.addEventListener('click', () => {
-      const key = el.dataset.key;
-      if (state.selected.has(key)) {
-        state.selected.delete(key);
-        el.classList.remove('selected');
-      } else {
-        state.selected.add(key);
-        el.classList.add('selected');
-      }
-      updateFooter();
-    });
-  });
-}
+// Delegated click handler — survives innerHTML replacements, no rebinding needed
+document.getElementById('contentArea').addEventListener('click', (e) => {
+  const el = e.target.closest('.item');
+  if (!el) return;
+  const key = el.dataset.key;
+  if (state.selected.has(key)) {
+    state.selected.delete(key);
+    el.classList.remove('selected');
+  } else {
+    state.selected.add(key);
+    el.classList.add('selected');
+  }
+  updateFooter();
+});
 
 // Tabs
 document.querySelectorAll('.tab').forEach(tab => {
@@ -240,10 +248,12 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
-// Search
+// Search (debounced to avoid render thrashing on fast typing)
+let searchTimer;
 document.getElementById('searchInput').addEventListener('input', e => {
   state.query = e.target.value;
-  render();
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(render, 120);
 });
 
 // Filter buttons
