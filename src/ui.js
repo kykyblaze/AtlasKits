@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────
 // FlagMap – UI Logic
 // Data (ORGANIZATIONS, COUNTRIES, CONTINENTS) is injected by build-ui.js
-// Assets (window.ASSETS) is injected by build-ui.js
+// Assets (window.ASSETS) is injected by build-ui.js as raw SVG strings
 // ─────────────────────────────────────────
 
 // ─────────────────────────────────────────
@@ -9,8 +9,11 @@
 // Keys are lowercase paths matching the assets/ folder structure (no extension).
 // ─────────────────────────────────────────
 function flagKey(name, shape, section) {
-  const folder = { rect: 'rectangle', sq: 'square', circ: 'circle' }[shape] || 'rectangle';
-  return `flags/${section.toLowerCase()}/${folder}/${name.toLowerCase()}`;
+  // Circle and Square SVGs are NOT bundled — CSS handles those shapes via
+  // border-radius / aspect-ratio on the <img> wrapper. We always load the
+  // rectangle asset and let CSS do the visual transformation.
+  void shape; // shape param kept for call-site compatibility
+  return `flags/${section.toLowerCase()}/rectangle/${name.toLowerCase()}`;
 }
 function mapKey(name) {
   const normalized = name.toLowerCase().trim();
@@ -105,16 +108,18 @@ function imgClass() {
 function renderImg(item) {
   const cls = imgClass();
   const key = assetPathKey(item);
-  const b64 = (window.ASSETS && window.ASSETS[key]) || '';
+  const svgRaw = (window.ASSETS && window.ASSETS[key]) || '';
 
-  if (!b64) {
+  if (!svgRaw) {
     return `<div class="item-img-wrap ${cls}">
       <div class="img-placeholder ${cls}">${escapeHtml(item.iso || '?')}</div>
     </div>`;
   }
 
+  // Use a URL-encoded data URI — no base64 overhead, works in all browsers
+  const dataUri = 'data:image/svg+xml,' + encodeURIComponent(svgRaw);
   return `<div class="item-img-wrap ${cls}">
-    <img src="data:image/svg+xml;base64,${b64}" alt="${escapeHtml(item.name)}">
+    <img src="${dataUri}" alt="${escapeHtml(item.name)}">
   </div>`;
 }
 
@@ -279,15 +284,16 @@ document.getElementById('btnAdd').addEventListener('click', () => {
 
     // Build the asset key and decode SVG text
     let assetKey = '';
+    // Always resolve to the rectangle asset key — circle/square are CSS-only
     if (tab === 'flags') {
       const section = found.type === 'organization' ? 'Organizations' : 'Countries';
-      assetKey = flagKey(found.name, state.shape, section);
+      assetKey = flagKey(found.name, 'rect', section);
     } else {
       assetKey = found.type === 'continent' ? continentKey(found.name) : mapKey(found.name);
     }
 
-    const b64 = (window.ASSETS && window.ASSETS[assetKey]) || '';
-    const svgText = b64 ? atob(b64) : '';
+    // window.ASSETS now stores raw SVG strings — no atob() needed
+    const svgText = (window.ASSETS && window.ASSETS[assetKey]) || '';
 
     items.push({
       name: found.name,

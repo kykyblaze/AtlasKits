@@ -13,7 +13,8 @@
   "devDependencies": {
     "@figma/eslint-plugin-figma-plugins": "*",
     "@figma/plugin-typings": "*",
-    "eslint": "^8.54.0"
+    "eslint": "^8.54.0",
+    "svgo": "^4.0.2"
   },
   "eslintConfig": {
     "extends": [
