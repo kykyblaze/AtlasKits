@@ -1,16 +1,17 @@
 # FlagMap
 
-A Figma plugin for browsing and inserting country flags, maps, and continent maps as SVG nodes onto the canvas.
+A Figma plugin for browsing and inserting country flags, organisation flags, maps, and continent maps as SVGs into your design.
 
 **Supports:** Figma Design, FigJam, Figma Slides
 
 ## Features
 
-- 🏳 **Flags** — 196 countries + 7 organizations in rectangle, square, and circle shapes
-- 🗺 **Maps** — Country outlines and continent silhouettes
+- Country and organisation flags in rectangle, square, and circle shapes
+- Country and continent maps
+- Detach states/province from a country
 - Search by country name or ISO code
 - Multi-select and batch-insert onto the canvas
-- Auto-arrangement in viewport or within a selected frame
+- Auto-arrangement in the viewport or within a selected frame
 
 ## Project Structure
 
