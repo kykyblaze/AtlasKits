@@ -1,40 +1,54 @@
-Below are the steps to get your plugin running. You can also find instructions at:
+# FlagMap
 
-  https://www.figma.com/plugin-docs/plugin-quickstart-guide/
+A Figma plugin for browsing and inserting country flags, organisation flags, maps, and continent maps as SVGs into your design.
 
-This plugin template uses Typescript and NPM, two standard tools in creating JavaScript applications.
+**Supports:** Figma Design, FigJam, Figma Slides
 
-First, download Node.js which comes with NPM. This will allow you to install TypeScript and other
-libraries. You can find the download link here:
+## Features
 
-  https://nodejs.org/en/download/
+- Country and organisation flags in rectangle, square, and circle shapes
+- Country and continent maps
+- Detach states/province from a country
+- Search by country name or ISO code
+- Multi-select and batch-insert onto the canvas
+- Auto-arrangement in the viewport or within a selected frame
 
-Next, install TypeScript using the command:
+## Project Structure
 
-  npm install -g typescript
+```
+├── src/
+│   ├── ui.css        # All UI styles
+│   ├── ui.js         # UI logic (state, render, events)
+│   └── data.json     # Country/org/continent data
+├── assets/           # SVG source files (flags + maps)
+├── ui.src.html       # HTML template with placeholders
+├── build-ui.js       # Build script — assembles ui.html
+├── code.js           # Figma sandbox (node creation)
+├── manifest.json     # Figma plugin manifest
+└── package.json      # npm config
+```
 
-Finally, in the directory of your plugin, get the latest type definitions for the plugin API by running:
+## Getting Started
 
-  npm install --save-dev @figma/plugin-typings
+1. Install dependencies:
+   ```
+   npm install
+   ```
 
-If you are familiar with JavaScript, TypeScript will look very familiar. In fact, valid JavaScript code
-is already valid Typescript code.
+2. Build the UI:
+   ```
+   npm run build
+   ```
+   This reads SVGs from `assets/`, inlines `src/ui.css`, `src/data.json`, and `src/ui.js` into `ui.src.html`, and outputs a self-contained `ui.html`.
 
-TypeScript adds type annotations to variables. This allows code editors such as Visual Studio Code
-to provide information about the Figma API while you are writing code, as well as help catch bugs
-you previously didn't notice.
+3. Load the plugin in Figma:
+   - Open Figma → Plugins → Development → Import plugin from manifest
+   - Select `manifest.json` from this directory
 
-For more information, visit https://www.typescriptlang.org/
+## Development
 
-Using TypeScript requires a compiler to convert TypeScript (code.ts) into JavaScript (code.js)
-for the browser to run.
-
-We recommend writing TypeScript code using Visual Studio code:
-
-1. Download Visual Studio Code if you haven't already: https://code.visualstudio.com/.
-2. Open this directory in Visual Studio Code.
-3. Compile TypeScript to JavaScript: Run the "Terminal > Run Build Task..." menu item,
-    then select "npm: watch". You will have to do this again every time
-    you reopen Visual Studio Code.
-
-That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
+- **Edit styles** in `src/ui.css`
+- **Edit logic** in `src/ui.js`
+- **Edit data** in `src/data.json`
+- **Rebuild** with `npm run build` after any change
+- **Lint** with `npm run lint`

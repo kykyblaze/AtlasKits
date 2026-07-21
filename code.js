@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────
-// AtlasKits – Figma Plugin (code.js)
+// FlagMap – Figma Plugin (code.js)
 // Supports: Figma Design, FigJam, Figma Slides
 // SVGs are bundled locally — no network requests needed.
 // ─────────────────────────────────────────────────────────────────
@@ -14,9 +14,15 @@ const SHAPE_SIZES = {
   circ: { w: 50,  h: 50  },
 };
 
-const COAT_SIZE    = { w: 140, h: 160 };
 const MAP_SIZE     = { w: 240, h: 180 };
 const ITEM_SPACING = 24; // gap between placed nodes
+
+// Cache the font load promise to avoid redundant awaits
+let fontLoaded = null;
+function ensureFont() {
+  if (!fontLoaded) fontLoaded = figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
+  return fontLoaded;
+}
 
 // ─────────────────────────────────────────
 // Boot – show UI
@@ -24,7 +30,7 @@ const ITEM_SPACING = 24; // gap between placed nodes
 figma.showUI(__html__, {
   width:       PLUGIN_WIDTH,
   height:      PLUGIN_HEIGHT,
-  title:       "AtlasKits",
+  title:       "FlagMap",
   themeColors: true,
 });
 
@@ -136,7 +142,7 @@ async function createPlaceholder(item) {
     frame.cornerRadius = size.w / 2;
   }
 
-  await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
+  await ensureFont();
 
   const text = figma.createText();
   text.fontName              = { family: 'Inter', style: 'Regular' };
@@ -156,7 +162,6 @@ async function createPlaceholder(item) {
 // ─────────────────────────────────────────
 function getSize(item) {
   if (item.tab === 'flags') return SHAPE_SIZES[item.shape] || SHAPE_SIZES.rect;
-  if (item.tab === 'coats') return COAT_SIZE;
   if (item.tab === 'maps')  return MAP_SIZE;
   return SHAPE_SIZES.rect;
 }

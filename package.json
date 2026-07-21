@@ -1,37 +1,37 @@
 {
-  "name": "atlaskits",
+  "name": "flagmap",
   "version": "1.0.0",
-  "description": "Your Figma Plugin",
+  "description": "Figma plugin for browsing and inserting country flags, maps, and continent maps as SVG nodes.",
   "main": "code.js",
   "scripts": {
     "build": "node build-ui.js",
-    "lint": "eslint --ext .ts,.tsx --ignore-pattern node_modules .",
-    "lint:fix": "eslint --ext .ts,.tsx --ignore-pattern node_modules --fix .",
-    "watch": "node build-ui.js"
+    "lint": "eslint --ext .js --ignore-pattern node_modules .",
+    "lint:fix": "eslint --ext .js --ignore-pattern node_modules --fix ."
   },
   "author": "",
   "license": "",
   "devDependencies": {
     "@figma/eslint-plugin-figma-plugins": "*",
     "@figma/plugin-typings": "*",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@typescript-eslint/parser": "^6.12.0",
     "eslint": "^8.54.0",
-    "typescript": "^5.3.2"
+    "svgo": "^4.0.2"
   },
   "eslintConfig": {
     "extends": [
       "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
       "plugin:@figma/figma-plugins/recommended"
     ],
-    "parser": "@typescript-eslint/parser",
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "node": true
+    },
     "parserOptions": {
-      "project": "./tsconfig.json"
+      "ecmaVersion": 2021
     },
     "root": true,
     "rules": {
-      "@typescript-eslint/no-unused-vars": [
+      "no-unused-vars": [
         "error",
         {
           "argsIgnorePattern": "^_",
